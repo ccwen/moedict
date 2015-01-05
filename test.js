@@ -1,6 +1,5 @@
 var kde=require("ksana-database");
 var kse=require("ksana-search");
-var plist=require("ksana-document").plist;
 var test=function(err,engine) {
 	var pageNames=engine.get("pageNames");
 	var i=plist.indexOfSorted(pageNames,"英");
