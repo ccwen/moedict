@@ -52,7 +52,7 @@ var dumphete=function(hete) {
 					out.push(prefix(j)+defs[i][j]);
 				} else {
 					if (type) typeprefix="{"+type+"}";
-					else typeprefix="";git s
+					else typeprefix="";
 					out.push(typeprefix+encodetag(defs[i][j]));
 				}
 			}
