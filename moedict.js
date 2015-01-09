@@ -6,7 +6,7 @@ var config={
 	},
 	callbacks:{
 	}
-	,pageSeparator: "e"
+	,segsep: "e"
 	,glob:"moedict.lst"
 }
 module.exports=config;
