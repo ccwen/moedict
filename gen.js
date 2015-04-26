@@ -110,11 +110,10 @@ var dumpxml=function(entries) {
 		content="";
 	}
 	for (var i=0;i<entries.length;i++) {
-
 		if (i&& (i%256==0)) writexml();
 		content+=entries[i]+"\n";
 	}
-	writexml();
+	if (content) writexml();
 	return xmlfilenames;
 }
 var moesym=fs.readFileSync("raw/sym.txt","utf8").replace(/\r\n/g,"\n")
