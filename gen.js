@@ -68,7 +68,7 @@ var convert2xml=function(json) {
 	for(var i=0;i<json.length;i++) {
 		var percent=Math.floor(i*100/json.length);
 		if (percent!=lastpercent) {
-			console.log(percent);
+			//console.log(percent);
 		}
 		lastpercent=percent;
 		if (json[i].title=="undefined") continue;
@@ -83,7 +83,40 @@ var convert2xml=function(json) {
 	out=out.sort(function(a,b){return a[0]>b[0]?1:b[0]>a[0]?-1:0;});
 	return out.map(function(e){return e[1]});
 }
+
+var parseHugeJSON=function(rawlines) {
+	var content="", out=[];
+	for (var i=1;i<rawlines.length-2;i++) {//skip staring [ and ending ] ,last line is empty
+		var line=rawlines[i];
+		if (line==="	},") {
+			content+="}";
+			out.push(JSON.parse(content));
+			content="";
+		} else {
+			content+=line;
+		}
+	}
+	return out;
+}
 //===================================================================
+var dumpxml=function(entries) {
+	var xmlfilenames=[];
+	var batch=1,content="";
+	var writexml=function() {
+		var fn="xml/moedict"+batch+".xml";
+		xmlfilenames.push(fn);
+		fs.writeFileSync(fn,content,"utf8");
+		batch++;
+		content="";
+	}
+	for (var i=0;i<entries.length;i++) {
+
+		if (i&& (i%256==0)) writexml();
+		content+=entries[i]+"\n";
+	}
+	writexml();
+	return xmlfilenames;
+}
 var moesym=fs.readFileSync("raw/sym.txt","utf8").replace(/\r\n/g,"\n")
 .replace(/\r/g,"\n").split("\n");//https://github.com/g0v/moedict-epub/blob/master/sym.txt
 var eudc={};
@@ -94,9 +127,22 @@ var moedictraw=fs.readFileSync("raw/dict-revised.json","utf8");
 console.log("replacing missing character");
 moedictraw=replaceMissingCharacter(moedictraw);
 console.log("missing character replaced",replaced)
-console.log("parsing moe");
+console.log("split into lines");
+var rawlines=moedictraw.split("\n");
+console.log("parsing moe, raw line count",rawlines.length);
+var entries=parseHugeJSON(rawlines);
+console.log("converting entries",entries.length);
+var xml=convert2xml(entries);
+
+console.log("save to file");
+var filenames=dumpxml(xml);
+console.log("finished,file count",filenames.length);
+fs.writeFileSync("moedict.lst",filenames.join("\n"));
+
+/*
 var moedict=JSON.parse(moedictraw);
 console.log("convert to xml");
 var out=convert2xml(moedict);
 console.log("savefile");
 fs.writeFileSync("moedict.xml",out.join("\n"),"utf8");
+*/
