@@ -1,4 +1,5 @@
 var fs=require("fs");
+var charonly=false; //only output single char entries
 var buildeudc=function() {
 	console.log(moesym.length)
 	var i=0;
@@ -77,7 +78,8 @@ var convert2xml=function(json) {
 			var hete=json[i].heteronyms[j];
 			defs.push(dumphete(hete).join("\n"));
 		}
-		out.push([json[i].title,"<e>"+json[i].title+"</e>\n"+defs.join("\n")]);
+		if (charonly&&json[i].title.length>1) continue;
+		out.push([json[i].title,"<e>"+json[i].title+"</e>\n"+defs.join("\n")]);			
 	}
 	//entry is used for pageNames, sort it to enable binary search
 	out=out.sort(function(a,b){return a[0]>b[0]?1:b[0]>a[0]?-1:0;});
@@ -104,6 +106,7 @@ var dumpxml=function(entries) {
 	var batch=1,content="";
 	var writexml=function() {
 		var fn="xml/moedict"+batch+".xml";
+		if (charonly) fn="xml1/moedict"+batch+".xml";
 		xmlfilenames.push(fn);
 		fs.writeFileSync(fn,content,"utf8");
 		batch++;
