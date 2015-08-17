@@ -36,5 +36,5 @@ T.forEach(function(t){
 });
 
 T=T.map(function(t){return t.join("\t")})
-
+console.log(accumulate)
 fs.writeFileSync("title.txt",T.join("\n"),"utf8");

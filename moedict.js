@@ -2,7 +2,8 @@
 var config={
 	name:"moedict"
 	,meta:{
-		config:"simple1"
+		config:"simple1",
+		sortedSegNames:true
 	},
 	callbacks:{
 	}
