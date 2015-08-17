@@ -1,5 +1,7 @@
 moedict
 =======
+require https://github.com/ksanaforge/ksana2015
+
 download https://raw.githubusercontent.com/g0v/moedict-data/master/dict-revised.json
 and put into raw
 
