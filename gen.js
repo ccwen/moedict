@@ -130,7 +130,7 @@ console.log("replacing missing character");
 moedictraw=replaceMissingCharacter(moedictraw);
 console.log("missing character replaced",replaced)
 console.log("split into lines");
-var rawlines=moedictraw.split("\n");
+var rawlines=moedictraw.split(/\r?\n/);
 console.log("parsing moe, raw line count",rawlines.length);
 var entries=parseHugeJSON(rawlines);
 console.log("converting entries",entries.length);
